@@ -24,19 +24,17 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }) => {
-  const res = await client.getEntries({
+export async function getStaticProps({ params }) {
+  const { items } = await client.getEntries({
     content_type: 'recipe',
     'fields.slug': params.slug,
   });
 
   return {
-    props: {
-      recipe: res.items[0],
-      revalidate: 1,
-    },
+    props: { recipe: res.items[0] },
+    revalidate: 1,
   };
-};
+}
 
 export default function RecipeDetails({ recipe }) {
   const { featuredImage, title, cookingTime, ingredients, method } =
